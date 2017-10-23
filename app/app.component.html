@@ -1,0 +1,57 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="margin-20">
+        <h4>Add customer</h4>
+      </div>
+      <form [formGroup]="myForm" novalidate (ngSubmit)="save(myForm)">
+        <div class="form-group">
+          <label>Name</label>
+          <input type="text" class="form-control" formControlName="name">
+          <small *ngIf="!myForm.controls.name.valid" class="text-danger">
+              Name is required (minimum 5 characters).
+            </small>
+        </div>
+        <!--dispensations-->
+        <div formArrayName="dispensations">
+          <div *ngFor="let dispensation of myForm.controls.dispensations.controls; let i=index" class="panel panel-default">
+            <div class="panel-heading">
+              <span>Dispensation {{i + 1}}</span>
+              <span class="glyphicon glyphicon-remove pull-right" *ngIf="myForm.controls.dispensations.controls.length > 1" (click)="removeDispensation(i)"></span>
+            </div>
+            <div class="panel-body" [formGroupName]="i">
+              <div class="form-group col-xs-6">
+                <label>quantity</label>
+                <input type="text" class="form-control" formControlName="quantity">
+                <small [hidden]="myForm.controls.dispensations.controls[i].controls.quantity.valid" class="text-danger">
+                    Street is required
+                </small>
+              </div>
+              <div class="form-group col-xs-6">
+                <label>lote</label>
+                <input type="text" class="form-control" formControlName="lote">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="margin-20">
+          <a (click)="addDispensation()" style="cursor: default">
+            Add another dispensation +
+          </a>
+        </div>
+
+        <div class="margin-20">
+          <button type="submit" class="btn btn-primary pull-right" [disabled]="!myForm.valid">Submit</button>
+        </div>
+        <div class="clearfix"></div>
+
+        <div class="margin-20">
+          <div>myForm details:-</div>
+          <pre>Is myForm valid?: <br>{{myForm.valid | json}}</pre>
+          <pre>form value: <br>{{myForm.value | json}}</pre>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
